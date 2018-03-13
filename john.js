@@ -70,8 +70,8 @@ client.on('ready', () => {
 client.on('message', msg => {
   const content = msg.content.toLowerCase()
   const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
-  if (fields) {
-    getPhotos(msg, fields[1], fields[2] || -1, fields[3] || fields[2])
+  if (fields[1] == "fetch") {
+    getPhotos(msg, fields[2], fields[3] || -1, fields[4] || fields[3])
   }
   if (content.includes('csgostats')) {
     msg.channel.send('És o pior jogador de cs do Putas & Vinho Verde. A minha avó tem melhor pontaria.')
@@ -82,12 +82,12 @@ client.on('message', msg => {
   if(content.includes('why?')){
     msg.channel.send('Because fuck you that\'s why, nigga');
   }
-  /*if (content.includes('johnlad, apologize to black')){
+  if (content.includes('johnlad, apologize to black')){
     msg.channel.send('Sorry uncle Blacky');
   }
   if (content.includes('johnlad do the reeeee')){
     msg.channel.send('http://i0.kym-cdn.com/entries/icons/original/000/017/830/b49.gif');
-  }*/
+  }
 })
  
 client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
