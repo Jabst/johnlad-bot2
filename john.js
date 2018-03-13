@@ -70,9 +70,11 @@ client.on('ready', () => {
 client.on('message', msg => {
   const content = msg.content.toLowerCase()
   const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
-  if (fields[1] == "fetch") {
-    getPhotos(msg, fields[2], fields[3] || -1, fields[4] || fields[3])
-  }
+  if (fields.length > 0){
+    if (fields[1] == "fetch") {
+      getPhotos(msg, fields[2], fields[3] || -1, fields[4] || fields[3])
+    }
+  }  
   if (content.includes('csgostats')) {
     msg.channel.send('És o pior jogador de cs do Putas & Vinho Verde. A minha avó tem melhor pontaria.')
   }
