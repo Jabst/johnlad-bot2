@@ -82,12 +82,12 @@ client.on('message', msg => {
   if(content.includes('why?')){
     msg.channel.send('Because fuck you that\'s why, nigga');
   }
-  if (content.includes('johnlad, apologize to black')){
+  /*if (content.includes('johnlad, apologize to black')){
     msg.channel.send('Sorry uncle Blacky');
   }
   if (content.includes('johnlad do the reeeee')){
     msg.channel.send('http://i0.kym-cdn.com/entries/icons/original/000/017/830/b49.gif');
-  }
+  }*/
 })
  
 client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
