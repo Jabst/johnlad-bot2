@@ -1,5 +1,8 @@
 var Discord = require('discord.js');
 var request = require('request');
+var Twitter = require('twitter-node-client').Twitter;
+
+
 const client = new Discord.Client()
  
 const getErrorMessage = maxId => maxId ? 'A puta não tem assim tanta foto no insta' : 'Essa puta tem o insta privado'
@@ -26,24 +29,28 @@ const getPiropo = (msg, username) => {
 }
  
 const getPhotos = (msg, username, start, end, maxId) => {
+  console.log(username, start, end, maxId);
   request(`https://www.instagram.com/${username}/?__a=1&max_id=${maxId || ''}`, (err, res) => {
     if (err) {
       msg.channel.send(getErrorMessage(maxId))
     } else {
       try {
-        const photos = JSON.parse(res.body).user.media.nodes
+        //console.log(res.body);
+        const photos = JSON.parse(res.body).graphql.user.edge_owner_to_timeline_media.edges;
+
+        
         if (!photos.length) {
           msg.channel.send(getErrorMessage(maxId))
         } else {
           if(start == -1){
-            msg.channel.send(photos[Math.min(photos.length, Math.floor(Math.random() * Math.min(12, photos.length)))].display_src)
+            msg.channel.send(photos[Math.min(photos.length, Math.floor(Math.random() * Math.min(12, photos.length)))].node.display_url)
             getPiropo(msg, username)
           }
           else {
             if (start < photos.length) {
               photos
                 .filter((_, i) => i >= start && i <= end)
-                .forEach(photo => msg.channel.send(photo.display_src))
+                .forEach(photo => msg.channel.send(photo.node.display_url))
             }
             start = Math.max(start - photos.length, 0)
             end -= photos.length
@@ -70,9 +77,12 @@ client.on('ready', () => {
 client.on('message', msg => {
   const content = msg.content.toLowerCase()
   const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
-  if (fields){
-    if (fields[1] == "fetch") {
-      getPhotos(msg, fields[2], fields[3] || -1, fields[4] || fields[3])
+
+  const instafields = msg.content.toLowerCase().split(' ');
+  if (instafields){
+    if (instafields[1] == "fetch") {
+      console.log(instafields);
+      getPhotos(msg, instafields[2], instafields[3].split('-')[0] || -1, instafields[3].split('-')[1], 4)
     }
   }  
   if (content.includes('csgostats')) {
