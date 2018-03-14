@@ -89,7 +89,7 @@ client.on('message', msg => {
     msg.channel.send('És o pior jogador de cs do Putas & Vinho Verde. A minha avó tem melhor pontaria.')
   }
   if (content.includes('this is to go even further beyond')){
-    msg.channel.send('@everyone AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+    msg.channel.send('@everyone AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH https://media1.giphy.com/media/Po7vUVPOYKqlO/200.gif')
   }
   if(content.includes('why?')){
     msg.channel.send('Because fuck you that\'s why, nigga');
