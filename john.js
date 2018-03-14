@@ -70,7 +70,7 @@ client.on('ready', () => {
 client.on('message', msg => {
   const content = msg.content.toLowerCase()
   const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
-  if (fields.length > 0){
+  if (fields){
     if (fields[1] == "fetch") {
       getPhotos(msg, fields[2], fields[3] || -1, fields[4] || fields[3])
     }
