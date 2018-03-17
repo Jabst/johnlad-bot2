@@ -6,6 +6,8 @@ var Twitter = require('twitter-node-client').Twitter;
 const client = new Discord.Client()
  
 const getErrorMessage = maxId => maxId ? 'A puta não tem assim tanta foto no insta' : 'Essa puta tem o insta privado'
+
+const key = 'CC83wl-OSvJS2KcwxCKM3wCZXEA';
  
 const getPiropo = (msg, username) => {
   if(username.includes('ines')) {
@@ -69,6 +71,35 @@ const getPhotos = (msg, username, start, end, maxId) => {
     }
   })
 }
+
+const getCleverBot = (msg, fields) => {
+  var string = "";
+  for(var i = 2 ; i < fields.length; i++){
+    string += fields[i] + " ";
+  }
+
+    console.log(`http://www.cleverbot.com/getreply?key=${key}&input=${encodeURI(string)}&cs=76nxdxIJ02AAA&callback=ProcessReply`);
+  request(`http://www.cleverbot.com/getreply?key=${key}&input=${encodeURI(string)}&cs=76nxdxIJ02AAA&callback=ProcessReply`, (err, res) => {
+    if (err) {
+      msg.channel.send(getErrorMessage(maxId))
+    } else {
+      try {
+        
+        console.log(res.body);
+        // console.log(JSON.parse(res.body));
+
+        var message = JSON.parse(res.body.substring(res.body.lastIndexOf("(")+ 1, res.body.lastIndexOf(")"))).output;
+
+        msg.channel.send(message);
+        
+      }
+      catch(e) {
+        msg.channel.send('Esse insta não existe')
+      }
+    }
+  })
+  
+}
  
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
@@ -79,12 +110,19 @@ client.on('message', msg => {
   const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
 
   const instafields = msg.content.toLowerCase().split(' ');
+
+  const cleverbotfields = msg.content.toLowerCase().split(' ');
   if (instafields){
     if (instafields[1] == "fetch") {
       console.log(instafields);
       getPhotos(msg, instafields[2], instafields[3].split('-')[0] || -1, instafields[3].split('-')[1], 4)
     }
-  }  
+  }
+  if(cleverbotfields){
+    if(cleverbotfields[1] == "talk"){
+      getCleverBot(msg, cleverbotfields);
+    }
+  }
   if (content.includes('csgostats')) {
     msg.channel.send('És o pior jogador de cs do Putas & Vinho Verde. A minha avó tem melhor pontaria.')
   }
