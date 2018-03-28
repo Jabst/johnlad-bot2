@@ -140,6 +140,10 @@ client.on('message', msg => {
   if (content.includes('johnlad do the sad reeeee')){
     msg.channel.send('https://ih1.redbubble.net/image.195485388.5310/flat,800x800,075,f.jpg');
   }
+  if (content.includes('johnlad what next?')){
+    msg.channel.send('https://i.imgflip.com/1avf97.jpg');
+  }
+  
 })
  
 client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
