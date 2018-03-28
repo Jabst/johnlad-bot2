@@ -1,6 +1,5 @@
 var Discord = require('discord.js');
 var request = require('request');
-var Twitter = require('twitter-node-client').Twitter;
 
 
 const client = new Discord.Client()
@@ -137,6 +136,9 @@ client.on('message', msg => {
   }
   if (content.includes('johnlad do the reeeee')){
     msg.channel.send('http://i0.kym-cdn.com/entries/icons/original/000/017/830/b49.gif');
+  }
+  if (content.includes('johnlad do the sad reeeee')){
+    msg.channel.send('https://ih1.redbubble.net/image.195485388.5310/flat,800x800,075,f.jpg');
   }
 })
  
