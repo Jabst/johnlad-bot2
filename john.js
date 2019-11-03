@@ -1,79 +1,26 @@
-var Discord = require('discord.js');
-var request = require('request');
+let Discord = require('discord.js');
+let request = require('request');
+
+const fs = require("fs");
+
+const ytdl = require('ytdl-core');
+const streamOptions = { seek: 0, volume: 1 };
+let utils = require("./utils.js");
+
+let { VoiceChannel } = require('discord.js');
 
 
-const client = new Discord.Client()
- 
-const getErrorMessage = maxId => maxId ? 'A puta não tem assim tanta foto no insta' : 'Essa puta tem o insta privado'
+const client = new Discord.Client();
+
+// const voiceChannel = new Discord.VoiceChannel();
+
 
 const key = 'CC83wl-OSvJS2KcwxCKM3wCZXEA';
  
-const getPiropo = (msg, username) => {
-  if(username.includes('ines')) {
-    msg.channel.send("Ai inês inês, com esse cu dás jantar para três")
-  }
-  if(username.includes('maria')) {
-    msg.channel.send("Oh maria dá-mo pito, oh maria dá-mo cá")
-  }
-  if(username.includes('diana')) {
-    msg.channel.send('A única diana que gosto é esta https://scontent-frt3-2.cdninstagram.com/vp/54d0873ea742325215e89f722525b0ae/5B4C4EF6/t51.2885-15/s1080x1080/e15/fr/26154187_140927293285298_6816544815979692032_n.jpg')
-  }
-  if(username.includes('jessica')) {
-    msg.channel.send('Ai jessica contigo dia é praia, noite é kiay')
-  }
-  if(username.includes('beatriz')){
-    msg.channel.send('Beatriz, se me deres o cu eu fico feliz')
-  }
-  if(username.includes('rita')){
-    msg.channel.send('Esta rita é muito pita')
-  }
-}
- 
-const getPhotos = (msg, username, start, end, maxId) => {
-  console.log(username, start, end, maxId);
-  request(`https://www.instagram.com/${username}/?__a=1&max_id=${maxId || ''}`, (err, res) => {
-    if (err) {
-      msg.channel.send(getErrorMessage(maxId))
-    } else {
-      try {
-        //console.log(res.body);
-        const photos = JSON.parse(res.body).graphql.user.edge_owner_to_timeline_media.edges;
 
-        
-        if (!photos.length) {
-          msg.channel.send(getErrorMessage(maxId))
-        } else {
-          if(start == -1){
-            msg.channel.send(photos[Math.min(photos.length, Math.floor(Math.random() * Math.min(12, photos.length)))].node.display_url)
-            getPiropo(msg, username)
-          }
-          else {
-            if (start < photos.length) {
-              photos
-                .filter((_, i) => i >= start && i <= end)
-                .forEach(photo => msg.channel.send(photo.node.display_url))
-            }
-            start = Math.max(start - photos.length, 0)
-            end -= photos.length
-            if(end > 0) {
-              getPhotos(msg, username, start, end, photos[photos.length - 1].id)
-            }
-            else {
-              getPiropo(msg, username)
-            }
-          }
-        }
-      }
-      catch(e) {
-        msg.channel.send('Esse insta não existe')
-      }
-    }
-  })
-}
-
-const getCleverBot = (msg, fields) => {
-  var string = "";
-  for(var i = 2 ; i < fields.length; i++){
+ const getCleverBot = (msg, fields) => {
+  let string = "";
+  for(let i = 2 ; i < fields.length; i++){
     string += fields[i] + " ";
   }
 
@@ -103,48 +50,217 @@ const getCleverBot = (msg, fields) => {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
+
+const joinServer = () => {
+  
+  
+}
+
+/*client.on('join', (cmd, msg) => {
+  
+});*/
  
-client.on('message', msg => {
+client.on('message', (msg, smthing) => {
+
   const content = msg.content.toLowerCase()
-  const fields = /johnlad (\S+) ?(\d*)?-?(\d*)?/.exec(content)
+  const fields = /johnlad (\S+) ?(\D*)?-?(\D*)? ?(\D*)?-?(\D*)? (\S+)/.exec(content);
 
-  const instafields = msg.content.toLowerCase().split(' ');
+  const msgfields = msg.content.split(' ');
 
-  const cleverbotfields = msg.content.toLowerCase().split(' ');
-  if (instafields){
-    if (instafields[1] == "fetch") {
-      console.log(instafields);
-      getPhotos(msg, instafields[2], instafields[3].split('-')[0] || -1, instafields[3].split('-')[1], 4)
+  if(msgfields){
+    if(msgfields[1] == "talk"){
+      getCleverBot(msg, msgfields);
     }
-  }
-  if(cleverbotfields){
-    if(cleverbotfields[1] == "talk"){
-      getCleverBot(msg, cleverbotfields);
+    else if(msgfields[1] == "carneiro"){
+      carneiro(msg);
     }
-  }
-  if (content.includes('csgostats')) {
-    msg.channel.send('És o pior jogador de cs do Putas & Vinho Verde. A minha avó tem melhor pontaria.')
-  }
-  if (content.includes('this is to go even further beyond')){
-    msg.channel.send('@everyone AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH https://media1.giphy.com/media/Po7vUVPOYKqlO/200.gif')
-  }
-  if(content.includes('why?')){
-    msg.channel.send('Because fuck you that\'s why, nigga');
-  }
-  if (content.includes('johnlad, apologize to black')){
-    msg.channel.send('Sorry uncle Blacky');
-  }
-  if (content.includes('johnlad do the reeeee')){
-    msg.channel.send('http://i0.kym-cdn.com/entries/icons/original/000/017/830/b49.gif');
-  }
-  if (content.includes('johnlad do the sad reeeee')){
-    msg.channel.send('https://ih1.redbubble.net/image.195485388.5310/flat,800x800,075,f.jpg');
-  }
-  if (content.includes('johnlad what next?')){
-    msg.channel.send('https://i.imgflip.com/1avf97.jpg');
+    else if(msgfields[1] == "rickroll") {
+      rickroll(msg);
+    }
+    else if(msgfields[1] == "yt") {
+      if (msgfields[2]) {
+        yt(msg, msgfields[2]);
+      }
+    }
+    else if(msgfields[1] == "CALOU") {
+      shutup(msg);
+    }
+    else if(msgfields[1] == "listen") {
+      listen(msg);
+    }
+    else if(msgfields[1] == "greeter") {
+      greeter(msg);
+    }
+    else if(msgfields[1] == "naruto") {
+      naruto(msg);
+    }
+    else if(msgfields[1] == "monteiro"){
+      monteiro(msg);
+    }
   }
   
 })
+
+const shutup = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.leave();
+}
+
+const listen = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+    
+    const receiver = connection.createReceiver();    
+
+    connection.on('speaking', (user, speaking) => {
+      if(speaking) {
+        const audioStream = receiver.createPCMStream(user); //READABLE STREAM
+
+        const outputStream = utils.generateOutputFile(channel, user); // WRITABLE STREAM
+
+        audioStream.on("data", chunk => {
+          outputStream.write(chunk);
+        });
+
+        audioStream.on('end', () => {
+          msg.channel.send(`I'm no longer listening to ${user}`);
+          outputStream.end();
+          audioStream.destroy();
+        })
+
+        // connection = null;
+        
+      }      
+    })
+
+    
+  }).catch(console.error);
+  
+}
+
+const rickroll = (msg) => {
+
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const stream = ytdl('https://www.youtube.com/watch?v=kOHB85vDuow', { filter : 'audioonly' });
+    const dispatcher = connection.playStream(stream, streamOptions);
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+  
+}
+
+const naruto = (msg) => {
+  
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const stream = ytdl('https://www.youtube.com/watch?v=mjjkHg5FOhk', { filter : 'audioonly' });
+    const dispatcher = connection.playStream(stream, streamOptions);
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
+const carneiro = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/carneiro1.mp4");
+
+    /*dispatcher.on('end', () => {
+      channel.leave();
+    })*/
+
+  }).catch(console.error);
+}
+
+const monteiro = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/monteiro.mp4");
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
+const yt = (msg, url) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const stream = ytdl(`${url}`, { filter : 'audioonly' });
+    const dispatcher = connection.playStream(stream, streamOptions);
+
+
+  }).catch(console.error);
+}
+
+const greeter = (msg) => {
+
+  const channel = client.channels.get(msg.member.voiceChannelID);
+  
+  msg.channel.send("Estou a cumprimentar o pessoal :kekw:");
+  
+  client.on('voiceStateUpdate', (oldMember, newMember) => {
+    
+    // console.log(newMember);
+    
+    let newUserChannel = newMember.voiceChannel
+    let oldUserChannel = oldMember.voiceChannel
+    
+    channel.join().then(connection => {
+
+
+      if(oldUserChannel === undefined && newUserChannel !== undefined) {
+
+        if(newMember.user.id == "400977627374157825") {
+          msg.channel.send("Olá " + newMember.user.username);
+          const dispatcher = connection.playFile("./assets/carneiroin.mp3");
+
+          dispatcher.on('end', () => {
+            channel.leave();
+          })
+        }
+
+        if (newMember.user.id == "112272338459906048") {
+          msg.channel.send("Olá " + newMember.user.username);
+          const dispatcher = connection.playFile("./assets/carneiroin.mp3");
+
+          dispatcher.on('end', () => {
+            channel.leave();
+          })
+        }
+   
+     } else if(newUserChannel === undefined){
+   
+       // User leaves a voice channel
+   
+     }
+
+      
+
+    });
+
+  });
+}
  
 client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
 
