@@ -1,0 +1,27 @@
+{
+  "name": "johnlad-bot2",
+  "version": "1.0.0",
+  "description": "JohnLad The Bot",
+  "main": "john.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jabst/johnlad-bot2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jabst/johnlad-bot2/issues"
+  },
+  "homepage": "https://github.com/Jabst/johnlad-bot2#readme",
+  "dependencies": {
+    "discord.js": "^11.6.4",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^4.0.0",
+    "node-opus": "^0.3.3",
+    "request": "^2.88.2",
+    "ytdl-core": "^1.0.9"
+  }
+}

@@ -10,7 +10,16 @@ let utils = require("./utils.js");
 let { VoiceChannel } = require('discord.js');
 
 
-const client = new Discord.Client();
+let client;
+
+const createAndLogin = () => {
+
+  client = new Discord.Client();
+
+  client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
+}
+
+createAndLogin();
 
 // const voiceChannel = new Discord.VoiceChannel();
 
@@ -47,9 +56,6 @@ const key = 'CC83wl-OSvJS2KcwxCKM3wCZXEA';
   
 }
  
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`)
-})
 
 const joinServer = () => {
   
@@ -59,12 +65,8 @@ const joinServer = () => {
 /*client.on('join', (cmd, msg) => {
   
 });*/
- 
-client.on('message', (msg, smthing) => {
 
-  const content = msg.content.toLowerCase()
-  const fields = /johnlad (\S+) ?(\D*)?-?(\D*)? ?(\D*)?-?(\D*)? (\S+)/.exec(content);
-
+const msgReceived = (msg) => {
   const msgfields = msg.content.split(' ');
 
   if(msgfields){
@@ -85,6 +87,9 @@ client.on('message', (msg, smthing) => {
     else if(msgfields[1] == "CALOU") {
       shutup(msg);
     }
+    else if(msgfields[1] == "scry") {
+      scry(msg);
+    }
     else if(msgfields[1] == "listen") {
       listen(msg);
     }
@@ -97,8 +102,56 @@ client.on('message', (msg, smthing) => {
     else if(msgfields[1] == "monteiro"){
       monteiro(msg);
     }
+    else if (msgfields[1] == "boas") {
+      carneiroboas(msg)
+    }
+    else if (msgfields[1] == "chuveiro") {
+      chuveiro(msg)
+    }
+    else if (msgfields[1] == "rank") {
+      rank(msg)
+    }
+    else if (msgfields[1] == "mimimi") {
+      mimimi(msg)
+    }
+    else if (msgfields[1] == "woo") {
+      woo(msg)
+    }
+    else if (msgfields[1] == "power") {
+      power(msg)
+    }
+    else if (msgfields[1] == "sharingan") {
+      sharingan(msg)
+    }
+    else if (msgfields[1] == "pessoa") {
+      pessoa(msg)
+    }
+    else if (msgfields[1] == "bitch") {
+      bitch(msg)
+    }
+    else if(msgfields[1] == "maionese") {
+      maionese(msg)
+    }
   }
+}
+ 
+client.on('message', (msg, smthing) => {
+
+  const content = msg.content.toLowerCase()
+  const fields = /johnlad (\S+) ?(\D*)?-?(\D*)? ?(\D*)?-?(\D*)? (\S+)/.exec(content);
+
+  msgReceived(msg)
   
+})
+
+client.on('ready', () => {
+  if (!client.user) {
+    client.user = {
+      tag: "alhexanBOT"
+    }
+  }
+
+  console.log(`Logged in as ${client.user.tag}!`)
 })
 
 const shutup = (msg) => {
@@ -174,7 +227,11 @@ const naruto = (msg) => {
 }
 
 const carneiro = (msg) => {
+  
   const channel = client.channels.get(msg.member.voiceChannelID);
+
+  // console.log(msg.member.voiceChannelID);
+  console.log(channel);
 
   channel.join().then(connection => {
 
@@ -187,12 +244,157 @@ const carneiro = (msg) => {
   }).catch(console.error);
 }
 
+const bitch = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/bitch.mp3");
+
+    /*dispatcher.on('end', () => {
+      channel.leave();
+    })*/
+
+  }).catch(console.error);
+}
+
+const maionese = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/maionese.mp3");
+
+    /*dispatcher.on('end', () => {
+      channel.leave();
+    })*/
+
+  }).catch(console.error);
+}
+
+const sharingan = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/sharingan.mp3");
+
+    /*dispatcher.on('end', () => {
+      channel.leave();
+    })*/
+
+  }).catch(console.error);
+}
+
+const rank = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/rank.mp3");
+
+    /*dispatcher.on('end', () => {
+      channel.leave();
+    })*/
+
+  }).catch(console.error);
+}
+
+
+const scry = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/scry_em_draft.mp3");
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
+const carneiroboas = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/carneiro_bomdia.mp3");
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
 const monteiro = (msg) => {
   const channel = client.channels.get(msg.member.voiceChannelID);
 
   channel.join().then(connection => {
 
     const dispatcher = connection.playFile("./assets/monteiro.mp4");
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
+const woo = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/woow.mp3");
+
+  }).catch(console.error);
+}
+
+const pessoa = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/pessoa.mp3");
+
+  }).catch(console.error);
+}
+
+const power = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/power.mp3");
+
+  }).catch(console.error);
+}
+
+
+
+const chuveiro = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/chuveiro.mp3");
+
+    dispatcher.on('end', () => {
+      channel.leave();
+    })
+
+  }).catch(console.error);
+}
+
+const mimimi = (msg) => {
+  const channel = client.channels.get(msg.member.voiceChannelID);
+
+  channel.join().then(connection => {
+
+    const dispatcher = connection.playFile("./assets/mimimi.mp3");
 
     dispatcher.on('end', () => {
       channel.leave();
@@ -262,5 +464,22 @@ const greeter = (msg) => {
   });
 }
  
-client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
 
+
+const johnladBypass = (msg) => {
+  data = {
+    content: `johnlad ${msg}`,
+    member: {
+      channelID: 546726308923834382,
+    }
+  }
+
+  
+  msgReceived(data);
+
+}
+
+
+exports.johnladBypass = johnladBypass;
+exports.cenas = "cenas";
+exports.init = createAndLogin;
