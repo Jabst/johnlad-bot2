@@ -16,7 +16,7 @@ const createAndLogin = () => {
 
   client = new Discord.Client();
 
-  client.login('NDIzMTcwNjgwMTQyNjkyMzUz.DYmcAA.vrqI2qt_u9lSH6R_EHobFtaswNg')
+  client.login('NDIzMTcwNjgwMTQyNjkyMzUz.WqgKaA._wEP1QemhSo31Re2_raN4OpHm3k')
 }
 
 createAndLogin();
@@ -24,7 +24,7 @@ createAndLogin();
 // const voiceChannel = new Discord.VoiceChannel();
 
 
-const key = 'CC83wl-OSvJS2KcwxCKM3wCZXEA';
+const key = 'P-3neK1e9CtQLCAqjS10Fj82aP1GIiH_';
  
 
  const getCleverBot = (msg, fields) => {
